@@ -1,0 +1,37 @@
+<div class="script"><?php foreach ($this->scripts as $key => $script): ?>
+
+	<?php 
+	$bbcode = Zend_Registry::get('bbocde');
+	if(file_exists('images/scripts/'.$script['scriptID'].'.gif')):?>
+	    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'show', 'id' => $script['scriptID']),
+              'showScripts',
+                true) ?>"><img src="<?php echo 'images/scripts/'.$script['scriptID'].'.gif'?>" alt="<?php echo $this->escape($script['ScriptName']) ?>"/>
+		</a>
+	<br />
+	<?php endif;?>
+	<div style="overflow:auto;padding-left:20px;max-height:400px;width: 1000px;"><?php echo $bbcode->do_parse($script['Description'], false, true, true, true, true, false); ?>    </div>
+    <br />
+    
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'show', 'id' => $script['scriptID']),
+              'showScripts',
+                true) ?>">More Informations</a>
+<?php  $acl = Zend_Registry::get('acl');
+       if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'edit', 'id' => $script['scriptID']),
+              'edit',
+                true) ?>">Edit Script</a>
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'delete', 'id' => $script['scriptID']),
+              'deleteScript',
+                true) ?>">Delete Script</a>
+<?php endif;?>
+    <br /><br />
+    <?php if($key + 1 != count($this->scripts)):?>
+</div></div><br /><br />
+    <div style="text-align:left;" id="imgPreview"><div class="script">
+    <?php endif;?>
+
+<?php endforeach ?>

@@ -1,0 +1,28 @@
+<h2>Auths</h2>
+<table width="800px" cellspacing="10">
+	<tr>
+		<td>Script Name</td>
+		<td>Username</td>
+		<td>Password</td>
+		<td>Loader</td>
+		<td>Submitter</td>
+		<td>Delete</td>
+	</tr>
+	<?php
+	foreach($this -> auths as $auth):
+	?>
+	<tr>
+		<td><?php echo $this -> escape($auth['scriptName']); ?></td>
+		<td><?php echo $this -> escape($auth['username']); ?></td>
+		<td><?php echo $this -> escape($auth['password']); ?></td>
+		<td><?php echo $this -> escape($auth['loader']); ?></td>
+		<td><?php echo getUserLink($auth['submitter']); ?></td>
+		<td><a href="<?php echo $this->url(
+              array('controller'=>'auth', 'action' => 'delete', 'id' => $auth['authID']),
+              'deleteAuth',
+                true);?>">Delete</a></td>
+	</tr>
+	<?php
+	endforeach;
+	?>
+</table>

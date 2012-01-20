@@ -1,0 +1,46 @@
+<?php if($this->pageCount==1) {}
+else {
+?>
+<center>
+<?php
+$request = Zend_Registry::get('_request');
+$data=array('bot' => $request->getParam('bot','All'),'category' => $request->getParam('category','All'),'search' => $request->getParam('search'),'page' => $request->getParam('page'));
+
+if($data['search'] == null) $url = "/scriptdb/scripts/search/".$data['bot']."/".$data['category'].'/';
+else $url = "/scriptdb/scripts/search/".$data['bot']."/".$data['category']."/s/".$data['search'].'/';
+?>
+<?php if ($this->pageCount): ?>
+<div class="paginationControl">
+<!-- Previous page link -->
+<?php if (isset($this->previous)): ?>
+  <a href="<?php echo $url.$this->previous;?>">
+    &lt; Previous
+  </a> 
+<?php else: ?>
+  
+<?php endif; ?>
+ 
+<!-- Numbered page links -->
+<?php foreach ($this->pagesInRange as $key => $page): ?>
+	<?php if($page != 1) echo '|';?>
+  <?php if($page != $this->current): ?>
+     <a href="<?php echo $url.$page?>">
+        <?php echo $page; ?>
+    </a> 
+  <?php else: ?>
+     <?php echo $page; ?> 
+  <?php endif; ?>
+<?php endforeach; ?>
+ 
+<!-- Next page link -->
+<?php if (isset($this->next)): ?>
+  <a href="<?php echo $url.$this->next; ?>">
+    Next &gt;
+  </a>
+<?php else: ?>
+  <span class="disabled"></span>
+<?php endif; ?>
+</div>
+<?php endif; ?>
+</center>
+<?php } ?>

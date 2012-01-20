@@ -1,0 +1,86 @@
+<div class="script">	
+<?php $bbcode = Zend_Registry::get('bbocde');
+$acl = Zend_Registry::get('acl'); 
+if(file_exists('images/scripts/'.$this -> script['scriptID'].'.gif')):?>
+	<center><img src="<?php echo 'images/scripts/'.$this -> script['scriptID'].'.gif'?>" alt="<?php echo $this->escape($this -> script['ScriptName']) ?>"/></center>
+	<br />
+	<?php endif;?>
+
+<div style="padding-left:20px;width: 1000px;"><?php echo $bbcode->do_parse($this -> script['Description'], false, true, true, true, true, false); ?></div><br /><br />
+   <center> 
+	<?php  $acl = Zend_Registry::get('acl');
+       if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'edit', 'id' => $this -> script['scriptID']),
+              'edit',
+                true) ?>">Edit Script</a>
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'delete', 'id' => $this -> script['scriptID']),
+              'deleteScript',
+                true) ?>">Delete Script</a>
+<?php endif;?><br /><br />
+    <?php  
+           if(!$acl->isAllowed(USER_RIGHT, null, 'downloadlastest')):
+				echo "Buy Subscriber to get all Downloads<br />";
+				endif;?>
+         <?php  
+                if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+<a href="<?php echo $this->url(
+              array('controller'=>'version', 
+              'action' => 'new', 
+              'id' => $this -> script['scriptID']),
+              'addVersion',
+                true) ?>">Add Version</a><br />
+         <?php endif;?>
+<br />
+<?php if(count($this -> versions)): ?>
+<h2>Script History</h2><br /><br />
+<?php if($acl->isAllowed(USER_RIGHT, null, 'downloadold')): ?>
+<table width="100%">
+	<tr>
+		<td width="20%">Version</td>
+		<td width="50%">Cracker</td>
+		<td width="30%">Actions</td>
+	</tr>
+	<?php foreach($this -> versions as $version): ?>
+		<tr>
+			<td><?php echo $this->escape($this -> script['ScriptName']); echo ' '.$this->escape($version['version']); ?> </td>
+			<td>
+				<?php echo getUserLink($version['cracker']); ?></td>
+			<td>
+				<a href="<?php echo $this->url(
+					  array('controller'=>'scripts', 
+					  'action' => 'download', 
+					  'id' => $this -> script['scriptID'],
+					  'version' => $version['versionID']),
+					  'downloadScripts',
+						true) ?>">Download Version</a><br />
+						
+						<?php if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+				<a href="<?php echo $this->url(
+					  array('controller'=>'scripts', 
+					  'action' => 'delete', 
+					  'id' => $version['versionID']),
+					  'delete',
+						true) ?>">Delete Version</a><br />
+										<a href="<?php echo $this->url(
+					  array('controller'=>'versions', 
+					  'action' => 'edit', 
+					  'id' => $version['versionID']),
+					  'editVersion',
+						true) ?>">Edit Version</a>
+						<?php endif; ?><br /></td>
+
+		</tr>
+	 
+	<?php endforeach;         
+		else:
+			echo "Please register to download<br />";
+		endif; ?>
+</table>
+<?php else:
+echo 'No Versions';
+endif;
+?></center>
+</div>
+				

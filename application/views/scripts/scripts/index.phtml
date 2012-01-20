@@ -1,0 +1,47 @@
+<div>
+<?php 
+$acl = Zend_Registry::get('acl');
+
+echo $this -> form; ?>
+</div>
+</div>
+<br /><br />
+<div style="text-align:left;" id="imgPreview">
+<h2> Scripts </h2>
+<?php if(count($this->scripts) == 0):
+echo '<br />No Script Found';
+else:?>
+<table width="800px" cellspacing="10ypx">
+	<tr>
+		<td>Scriptname</td>
+		<td>Bot</td>
+		<td>Category</td>
+		<td>Actions</td>
+	</tr>
+<?php foreach ($this->scripts as $key => $script): ?>
+ <tr><td><a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'show', 'id' => $script['scriptID']),
+              'showScripts',
+                true) ?>-<?php echo $this->escape($script['ScriptName']) ?>"><?php echo $this->escape($script['ScriptName']) ?></a></td>
+ <td><?php echo $this->escape($script['bot']) ?></td>
+ <td><?php echo $this->escape($script['category']) ?></td>
+ <td><a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'show', 'id' => $script['scriptID']),
+              'showScripts',
+                true) ?>-<?php echo $this->escape($script['ScriptName']) ?>">View Script</a> <br />
+				<?php if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'edit', 'id' => $script['scriptID']),
+              'edit',
+                true) ?>">Edit Script</a><br />
+    <a href="<?php echo $this->url(
+              array('controller'=>'scripts', 'action' => 'delete', 'id' => $script['scriptID']),
+              'deleteScript',
+                true) ?>">Delete Script</a>
+<?php endif;?></td></tr>
+<?php endforeach ?>
+</table>
+<?php echo $this->paginationControl($this->scripts,
+                                    'Sliding',
+                                    'pagination.phtml'); ?>
+<?php endif; ?>

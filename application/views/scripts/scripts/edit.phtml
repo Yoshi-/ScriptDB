@@ -1,0 +1,12 @@
+<?php 
+if(isset($this -> msg)) {
+    echo $this -> msg; 
+    return;
+}
+if(isset($this->errors)) {
+    foreach($this->errors as $error):
+        echo $error.'<br />';
+    endforeach;
+}
+?>
+<?php echo $this -> form;?>

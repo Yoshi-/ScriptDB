@@ -1,0 +1,53 @@
+<!-- application/layouts/scripts/layout.phtml -->
+<?php echo $this->doctype() ?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <base href="http://127.0.0.1/scriptdb/" />
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+      <title>ScriptDB</title>
+</script>
+      <?php echo $this->headLink()->appendStylesheet('global.css') ?>
+	  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    </head>
+    <body>
+    <div id="header" style="height:30px">
+      	<h1 style="float: left;text-shadow: 0px 0px 1px black;"><a href="/scriptdb">ScriptDB</a></h1>
+        <div id="header-navigation" style="float: right">
+		<h2>
+			<a href="http://rscoders.org">Home</a>
+		</h2>
+<?php  $acl = Zend_Registry::get('acl');
+       if($acl->isAllowed(USER_RIGHT, null, 'downloadold')):?>
+            <h2><a href="<?php echo $this->url(
+                array('controller'=>'auth'),
+                'default',
+                true) ?>">Submit Auth</a></h2>
+<?php endif; ?>
+            <h2><a href="<?php echo $this->url(
+                array('controller'=>'scripts'),
+                'default',
+                true) ?>">Scripts</a></h2>
+<?php  $acl = Zend_Registry::get('acl');
+       if($acl->isAllowed(USER_RIGHT, null, 'manage')):?>
+            <h2><a href="<?php echo $this->url(
+                array('controller'=>'scripts',
+                       'action' => 'new'),
+                'default',
+                true) ?>">Add Script</a></h2>
+			<h2><a href="<?php echo $this->url(
+                array('controller'=>'auth','action' => 'show'),
+                'default',
+                true) ?>">Show Auths</a></h2>
+<?php endif;?>
+        </div>
+    </div>
+     <div align="center" id="page"><br />
+<br />
+<br />
+    <div style="text-align:left;" id="imgPreview">
+    <?php echo $this->layout()->content ?>
+	</div>
+     </div>
+     <br /><br />
+    </body>
+</html>
